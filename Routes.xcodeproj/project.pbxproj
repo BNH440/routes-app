@@ -11,6 +11,8 @@
 		8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9E42B44CBBC0074B42D /* ContentView.swift */; };
 		8D80E9E72B44CBBD0074B42D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D80E9E62B44CBBD0074B42D /* Assets.xcassets */; };
 		8D80E9EA2B44CBBD0074B42D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D80E9E92B44CBBD0074B42D /* Preview Assets.xcassets */; };
+		8D80E9F12B44E0860074B42D /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F02B44E0860074B42D /* Schema.swift */; };
+		8D80E9F42B4607280074B42D /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 8D80E9F32B4607280074B42D /* Inject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,7 @@
 		8D80E9E42B44CBBC0074B42D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8D80E9E62B44CBBD0074B42D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D80E9E92B44CBBD0074B42D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8D80E9F02B44E0860074B42D /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D80E9F42B4607280074B42D /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +59,7 @@
 				8D80E9E42B44CBBC0074B42D /* ContentView.swift */,
 				8D80E9E62B44CBBD0074B42D /* Assets.xcassets */,
 				8D80E9E82B44CBBD0074B42D /* Preview Content */,
+				8D80E9F02B44E0860074B42D /* Schema.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -83,6 +88,9 @@
 			dependencies = (
 			);
 			name = Routes;
+			packageProductDependencies = (
+				8D80E9F32B4607280074B42D /* Inject */,
+			);
 			productName = Routes;
 			productReference = 8D80E9DF2B44CBBC0074B42D /* Routes.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,9 @@
 				Base,
 			);
 			mainGroup = 8D80E9D62B44CBBC0074B42D;
+			packageReferences = (
+				8D80E9F22B4607280074B42D /* XCRemoteSwiftPackageReference "Inject" */,
+			);
 			productRefGroup = 8D80E9E02B44CBBC0074B42D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D80E9F12B44E0860074B42D /* Schema.swift in Sources */,
 				8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */,
 				8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */,
 			);
@@ -285,6 +297,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.blakehaug.Routes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -344,6 +360,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8D80E9F22B4607280074B42D /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8D80E9F32B4607280074B42D /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D80E9F22B4607280074B42D /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8D80E9D72B44CBBC0074B42D /* Project object */;
 }
