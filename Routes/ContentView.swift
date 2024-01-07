@@ -8,28 +8,26 @@
 import SwiftUI
 import Foundation
 
+
 struct ContentView: View {
     @ObserveInjection var inject
     
     @State private var origin = ""
-    @State private var location1 = ""
-    @State private var location2 = ""
-    @State private var location3 = ""
-    @State private var location4 = ""
+    @State private var locations = ["", "", "", ""]
     @State private var destination = ""
     
     @State private var responseState: Response? = nil;
-
     
-    func calculateRoute (origin: String, location1: String, location2: String, location3: String, location4: String, destination: String) {
+    
+    func calculateRoute () {
         let route = RouteRequest(
             origin: Address(address: origin),
             destination: Address(address: destination),
             intermediates: [
-                Address(address: location1),
-                Address(address: location2),
-                Address(address: location3),
-                Address(address: location4)
+                Address(address: locations[0]),
+                Address(address: locations[1]),
+                Address(address: locations[2]),
+                Address(address: locations[3])
             ],
             travelMode: TravelMode.drive,
             optimizeWaypointOrder: StringBool.t
@@ -37,9 +35,9 @@ struct ContentView: View {
         
         let data = try! JSONEncoder().encode(route)
         
-        var request = URLRequest(url: URL(string: "https://routes.googleapis.com/directions/v2:computeRoutes")!,timeoutInterval: 10000)
+        var request = URLRequest(url: URL(string: "https://routes.googleapis.com/directions/v2:computeRoutes")!)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("AIzaSyBTA5p__tNNyJ4BDXQTgnZO1DphV8Grdcg", forHTTPHeaderField: "X-Goog-Api-Key")
+        request.addValue("", forHTTPHeaderField: "X-Goog-Api-Key")
         request.addValue("routes.optimizedIntermediateWaypointIndex", forHTTPHeaderField: "X-Goog-FieldMask")
         
         request.httpMethod = "POST"
@@ -50,20 +48,19 @@ struct ContentView: View {
                 print(String(describing: error))
                 return
             }
-            let response = try! JSONDecoder().decode(Response.self, from: data)
-            print(response)
-//            responseState = response;
+            let response = try? JSONDecoder().decode(Response.self, from: data)
+            if(response == nil) {
+                print("Error decoding response")
+                return
+            }
+            print(response!)
+            responseState = response;
             return
         }
         
         task.resume()
     }
-    
-    
-    func routeButton() {
-        calculateRoute(origin: origin, location1: location1, location2: location2, location3: location3, location4: location4, destination: destination)
-    }
-    
+        
     var body: some View {
         @ObserveInjection var inject
 
@@ -84,16 +81,16 @@ struct ContentView: View {
                 TextField(text: $origin, prompt: Text("Origin")) {
                     Text("Origin")
                 }
-                TextField(text: $location1, prompt: Text("Location 1")) {
+                TextField(text: $locations[0], prompt: Text("Location 1")) {
                     Text("Location 1")
                 }
-                TextField(text: $location2, prompt: Text("Location 2")) {
+                TextField(text: $locations[1], prompt: Text("Location 2")) {
                     Text("Location 2")
                 }
-                TextField(text: $location3, prompt: Text("Location 3")) {
+                TextField(text: $locations[2], prompt: Text("Location 3")) {
                     Text("Location 3")
                 }
-                TextField(text: $location4, prompt: Text("Location 4")) {
+                TextField(text: $locations[3], prompt: Text("Location 4")) {
                     Text("Location 4")
                 }
                 TextField(text: $destination, prompt: Text("Destination")) {
@@ -101,24 +98,30 @@ struct ContentView: View {
                 }
                 
             }.padding()
-            Button(action: routeButton) {
+            Button(action: calculateRoute) {
                 Text("Calculate Route")
             }
             .padding()
             
             if (responseState != nil){
-                VStack(alignment: .leading) {
-                    Text("Route")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                    Text("Origin: \(origin)")
-                    Text("Location 1: \(location1)")
-                    Text("Location 2: \(location2)")
-                    Text("Location 3: \(location3)")
-                    Text("Location 4: \(location4)")
-                    Text("Destination: \(destination)")
-                }
+                CapsuleLineSegment(items: ["Origin: \(origin)",
+                                           "Location 1: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[0] ?? 0)])",
+                                           "Location 2: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[1] ?? 0)])",
+                                           "Location 3: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[2] ?? 0)])",
+                                           "Location 4: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[3] ?? 0)])",
+                                           "Destination: \(destination)"
+                                          ])
             }
+            
+            
+            CapsuleLineSegment(items: ["Origin: \(origin)",
+                                       "Location 1: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[0] ?? 0)])",
+                                       "Location 2: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[1] ?? 0)])",
+                                       "Location 3: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[2] ?? 0)])",
+                                       "Location 4: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[3] ?? 0)])",
+                                       "Destination: \(destination)"
+                                      ])
+            
             Spacer()
         }
         .padding()
