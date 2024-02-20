@@ -14,6 +14,7 @@
 		8D80E9F12B44E0860074B42D /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F02B44E0860074B42D /* Schema.swift */; };
 		8D80E9F42B4607280074B42D /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 8D80E9F32B4607280074B42D /* Inject */; };
 		8D80E9F62B489C900074B42D /* CapsuleLineSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */; };
+		8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEF485B2B8473430098A7CD /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		8D80E9E92B44CBBD0074B42D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D80E9F02B44E0860074B42D /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLineSegment.swift; sourceTree = "<group>"; };
+		8DEF485B2B8473430098A7CD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			children = (
 				8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */,
 				8D80E9E42B44CBBC0074B42D /* ContentView.swift */,
+				8DEF485B2B8473430098A7CD /* LocationService.swift */,
 				8D80E9E62B44CBBD0074B42D /* Assets.xcassets */,
 				8D80E9E82B44CBBD0074B42D /* Preview Content */,
 				8D80E9F02B44E0860074B42D /* Schema.swift */,
@@ -153,6 +156,7 @@
 			files = (
 				8D80E9F62B489C900074B42D /* CapsuleLineSegment.swift in Sources */,
 				8D80E9F12B44E0860074B42D /* Schema.swift in Sources */,
+				8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */,
 				8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */,
 				8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */,
 			);
