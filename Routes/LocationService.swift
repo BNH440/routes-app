@@ -4,6 +4,9 @@
 //
 //  Created by Blake Haug on 2/19/24.
 //
+//  Credit to https://www.polpiella.dev/mapkit-and-swiftui-searchable-map
+//  for example code to create the address search feature
+//
 
 import MapKit
 

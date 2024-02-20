@@ -1,5 +1,5 @@
 //
-//  VerticalAccessoryGaugeStyle.swift
+//  CapsuleLineSegment.swift
 //  Routes
 //
 //  Created by Blake Haug on 1/5/24.
