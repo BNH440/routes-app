@@ -15,7 +15,7 @@ struct ContentView: View {
     @ObserveInjection var inject
     
     @State private var origin = ""
-    @State private var locations = [""]
+    @State private var locations: [String] = []
     @State private var destination = ""
     @State private var responseState: Response? = nil;
     
@@ -80,26 +80,9 @@ struct ContentView: View {
         @Binding var changeVar: ChangeVar
         @State private var locationService = LocationService(completer: .init())
         
-        func performLocalSearch() {
-            let request = MKLocalSearch.Request()
-            request.naturalLanguageQuery = searchText
-            request.resultTypes = .address
-
-            let search = MKLocalSearch(request: request)
-            search.start { response, error in guard
-                let response = response else {
-                    // Handle error
-                    return
-                }
-
-                searchResults = response.mapItems
-            }
-        }
-        
         
         var body: some View {
             VStack {
-                // 1
                 HStack {
                     Image(systemName: "magnifyingglass")
                     TextField("Search for an address", text: $searchText)
@@ -137,11 +120,9 @@ struct ContentView: View {
                                 Text(completion.subTitle)
                             }
                         }
-                        // 3
                         .listRowBackground(Color.clear)
                     }
                 }
-                // 4
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
             }
@@ -149,51 +130,11 @@ struct ContentView: View {
                 locationService.update(queryFragment: searchText)
             }
             .padding()
-            // 2
 //            .interactiveDismissDisabled()
-            // 3
             .presentationDetents([.height(600), .large])
-            // 4
             .presentationBackground(.regularMaterial)
-            // 5
 //            .presentationBackgroundInteraction(.enabled(upThrough: .large))
         }
-//        
-//        var body: some View{
-//            VStack {
-//                HStack {
-//                    TextField("Search...", text: $searchText)
-//                        .onChange(of: searchText) {
-//                            performLocalSearch()
-//                    }
-//                    Button("Cancel") {
-//                        showModal = false
-//                        searchText = ""
-//                    }
-//                }
-//                .padding()
-//                
-//                List(searchResults, id: \.self) { result in
-//                    Button(action: {
-//                        showModal = false
-//                        searchText = result.name ?? "Unknown"
-//                        
-//                        if(changeVar == .origin){
-//                            origin = searchText
-//                        }
-//                        else if(changeVar == .destination){
-//                            destination = searchText
-//                        }
-//                        else if(changeVar == .point){
-//                            locations.append(searchText)
-//                        }
-//                        
-//                        
-//                    }, label: {
-//                        Text("\(result.name ?? "Unknown")")
-//                    })
-//                }
-//            }}
     }
     
         
@@ -266,13 +207,9 @@ struct ContentView: View {
                 .padding()
                 
                 if(responseState != nil){
-                    CapsuleLineSegment(items: ["Origin: \(origin)",
-                                               "Location 1: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[0] ?? 0)])",
-                                               "Location 2: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[1] ?? 0)])",
-                                               "Location 3: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[2] ?? 0)])",
-                                               "Location 4: \(locations[Int(responseState?.routes[0].optimizedIntermediateWaypointIndex[3] ?? 0)])",
-                                               "Destination: \(destination)"
-                                              ])
+                    CapsuleLineSegment(items: ["Origin: \(origin)"] +
+                                       (responseState?.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] } ?? [""]) +
+                                               ["Destination: \(destination)"])
                 }
             }.padding(10)
             Spacer()
