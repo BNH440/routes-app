@@ -65,11 +65,6 @@ struct ContentView: View {
         task.resume()
     }
     
-    func search () {
-        
-    }
-    
-    // TODO pass in address variabke for this button. Button will pop up modal sheet to search for address and then fill in the address variable
     struct AddressSheet : View {
         @State private var searchText = ""
         @State private var searchResults: [MKMapItem] = []
