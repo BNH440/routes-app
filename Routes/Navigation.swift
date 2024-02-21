@@ -17,14 +17,17 @@ func openAppleMaps(origin: Address, destination: Address, locations: [Address]) 
         return item
     }
     
-    MKMapItem.openMaps(
-        with: mapItems,
-        launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-    )
+    DispatchQueue.main.async {
+        MKMapItem.openMaps(
+            with: mapItems,
+            launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+        )
+    }
 }
 
 func openGoogleMaps(origin: Address, destination: Address, locations: [Address]) {
     let url =  URL(string: "comgooglemapsurl://www.google.com/maps/dir/?api=1&origin=\(origin.addressText)&destination=\(destination.addressText)&waypoints=\(locations.map { "\($0.addressText)" }.joined(separator: "|"))")!
-    
-    UIApplication.shared.open(url) // TODO fix error: UIApplication.open(_:options:completionHandler:) must be used from main thread only
+    DispatchQueue.main.async {
+        UIApplication.shared.open(url)
+    }
 }
