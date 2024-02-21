@@ -10,13 +10,29 @@ import Foundation
 import MapKit
 
 
+struct Address: Identifiable, Hashable {
+    let id = UUID()
+    let title: String
+    let location: CLLocationCoordinate2D
+    let addressText: String
+    
+    static func == (lhs: Address, rhs: Address) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+}
+
 
 struct ContentView: View {
     @ObserveInjection var inject
     
-    @State private var origin = ""
-    @State private var locations: [String] = []
-    @State private var destination = ""
+    @State private var origin: Address? = nil
+    @State private var locations: [Address] = []
+    @State private var destination: Address? = nil
     @State private var responseState: Response? = nil;
     
     @State private var showModal = false
@@ -29,10 +45,25 @@ struct ContentView: View {
     
     
     func calculateRoute () {
+        guard origin != nil else {
+            print("Origin is nil")
+            return
+        }
+        
+        guard destination != nil else {
+            print("Destination is nil")
+            return
+        }
+        
+        guard locations.count > 1 else {
+            print("Not enough intermediate points")
+            return
+        }
+        
         let route = RouteRequest(
-            origin: Address(address: origin),
-            destination: Address(address: destination),
-            intermediates: locations.map { Address(address: $0) },
+            origin: addressToRequestAddress(address: origin!),
+            destination: addressToRequestAddress(address: destination!),
+            intermediates: locations.map { addressToRequestAddress(address: $0) },
             travelMode: TravelMode.drive,
             optimizeWaypointOrder: StringBool.t
         )
@@ -59,6 +90,9 @@ struct ContentView: View {
             }
             print(response!)
             responseState = response;
+            
+//            openAppleMaps(origin: origin!, destination: destination!, locations: responseState!.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] })
+            openGoogleMaps(origin: origin!, destination: destination!, locations: responseState!.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] })
             return
         }
         
@@ -66,70 +100,79 @@ struct ContentView: View {
     }
     
     struct AddressSheet : View {
-        @State private var searchText = ""
-        @State private var searchResults: [MKMapItem] = []
+        @State private var search = ""
+        @State private var searchResults: [SearchResult] = []
         @Binding var showModal: Bool
-        @Binding var locations: [String]
-        @Binding var origin: String
-        @Binding var destination: String
+        @Binding var locations: [Address]
+        @Binding var origin: Address?
+        @Binding var destination: Address?
         @Binding var changeVar: ChangeVar
         @State private var locationService = LocationService(completer: .init())
         
         
-        var body: some View {
-            VStack {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                    TextField("Search for an address", text: $searchText)
-                        .autocorrectionDisabled()
-                }
-                .padding(12)
-                .background(.gray.opacity(0.1))
-                .cornerRadius(8)
-                .foregroundColor(.primary)
-                
-                Spacer()
-                
-                List {
-                    ForEach(locationService.completions) { completion in
-                        Button(action: {
-                            showModal = false
-                            searchText = completion.title
-    
-                            if(changeVar == .origin){
-                                origin = searchText
+            var body: some View {
+                VStack {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                        TextField("Search for an address", text: $search)
+                            .autocorrectionDisabled()
+                            .onSubmit {
+                                Task {
+                                    searchResults = (try? await locationService.search(with: search)) ?? []
+                                }
                             }
-                            else if(changeVar == .destination){
-                                destination = searchText
+                    }
+                    .padding(12)
+                    .background(.gray.opacity(0.1))
+                    .cornerRadius(8)
+                    .foregroundColor(.primary)
+                    
+
+                    Spacer()
+
+                    List {
+                        ForEach(locationService.completions) { completion in
+                            Button(action: { didTapOnCompletion(completion) }) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(completion.title)
+                                        .font(.headline)
+                                        .fontDesign(.rounded)
+                                    Text(completion.subTitle)
+                                }
                             }
-                            else if(changeVar == .point){
-                                locations.append(searchText)
-                            }
-    
-    
-                        }) {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(completion.title)
-                                    .font(.headline)
-                                    .fontDesign(.rounded)
-                                Text(completion.subTitle)
-                            }
+                            .listRowBackground(Color.clear)
                         }
-                        .listRowBackground(Color.clear)
+                    }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
+                }
+                .onChange(of: search) {
+                    locationService.update(queryFragment: search)
+                }
+                .padding()
+                .presentationDetents([.height(600), .large])
+                .presentationBackground(.regularMaterial)
+            }
+
+            private func didTapOnCompletion(_ completion: SearchCompletions) {
+                Task {
+                    if let singleLocation = try? await locationService.search(with: "\(completion.title) \(completion.subTitle)").first {
+                        showModal = false
+                        searchResults = [singleLocation]
+                        
+                        let newAddress = Address(title: completion.title, location: singleLocation.location, addressText: singleLocation.address)
+
+                        if(changeVar == .origin){
+                            origin = newAddress
+                        }
+                        else if(changeVar == .destination){
+                            destination = newAddress                        }
+                        else if(changeVar == .point){
+                            locations.append(newAddress)
+                        }
                     }
                 }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
             }
-            .onChange(of: searchText){
-                locationService.update(queryFragment: searchText)
-            }
-            .padding()
-//            .interactiveDismissDisabled()
-            .presentationDetents([.height(600), .large])
-            .presentationBackground(.regularMaterial)
-//            .presentationBackgroundInteraction(.enabled(upThrough: .large))
-        }
     }
     
         
@@ -158,7 +201,7 @@ struct ContentView: View {
                     .fontWeight(.semibold)
                 VStack (alignment: .leading){
 
-                    Button(origin) {
+                    Button(origin?.title ?? "Select...") {
                         changeVar = .origin
                         showModal = true
                     }
@@ -167,8 +210,8 @@ struct ContentView: View {
                     }
                     .buttonStyle(.bordered)
                     
-                    ForEach(Array(locations.enumerated()), id: \.1) { index, string in
-                        Text(string)
+                    ForEach(Array(locations.enumerated()), id: \.1) { index, loc in
+                        Text(loc.title)
                     }
                     
                     
@@ -184,7 +227,7 @@ struct ContentView: View {
                     .buttonStyle(.bordered)
 
                     
-                    Button(destination) {
+                    Button(destination?.title ?? "Select...") {
                         changeVar = .destination
                         showModal = true
                     }
@@ -200,11 +243,12 @@ struct ContentView: View {
                     Text("Calculate Route")
                 }
                 .padding()
+                .disabled(origin == nil || destination == nil || locations.count < 2)
                 
                 if(responseState != nil){
-                    CapsuleLineSegment(items: ["Origin: \(origin)"] +
-                                       (responseState?.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] } ?? [""]) +
-                                               ["Destination: \(destination)"])
+                    CapsuleLineSegment(items: ["Origin: \(origin!.title)"] +
+                                       (responseState?.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0].title } ?? [""]) +
+                                       ["Destination: \(destination!.title)"])
                 }
             }.padding(10)
             Spacer()

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BD32B858DDD0009E562 /* Navigation.swift */; };
 		8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */; };
 		8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9E42B44CBBC0074B42D /* ContentView.swift */; };
 		8D80E9E72B44CBBD0074B42D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D80E9E62B44CBBD0074B42D /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D1D7BD32B858DDD0009E562 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		8D80E9DF2B44CBBC0074B42D /* Routes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesApp.swift; sourceTree = "<group>"; };
 		8D80E9E42B44CBBC0074B42D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */,
 				8D80E9E42B44CBBC0074B42D /* ContentView.swift */,
 				8DEF485B2B8473430098A7CD /* LocationService.swift */,
+				8D1D7BD32B858DDD0009E562 /* Navigation.swift */,
 				8D80E9E62B44CBBD0074B42D /* Assets.xcassets */,
 				8D80E9E82B44CBBD0074B42D /* Preview Content */,
 				8D80E9F02B44E0860074B42D /* Schema.swift */,
@@ -157,6 +160,7 @@
 				8D80E9F62B489C900074B42D /* CapsuleLineSegment.swift in Sources */,
 				8D80E9F12B44E0860074B42D /* Schema.swift in Sources */,
 				8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */,
+				8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */,
 				8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */,
 				8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */,
 			);

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MapKit
 
 
 // MARK: - Response
@@ -19,14 +20,22 @@ struct Route: Codable {
 
 // MARK: - Request
 struct RouteRequest: Codable {
-    let origin, destination: Address
-    let intermediates: [Address]
+    let origin, destination: RequestAddress
+    let intermediates: [RequestAddress]
     let travelMode: TravelMode
     let optimizeWaypointOrder: StringBool
 }
 
-struct Address: Codable {
-    let address: String
+struct RequestAddress: Codable {
+    let location: Location
+}
+
+struct Location: Codable {
+    let latLng: LatLng
+}
+
+struct LatLng: Codable {
+    let latitude, longitude: Double
 }
 
 enum TravelMode: String, Codable {
@@ -40,3 +49,7 @@ enum StringBool: String, Codable {
     case f = "false"
 }
 
+
+func addressToRequestAddress(address: Address) -> RequestAddress {
+    return RequestAddress(location: Location(latLng: LatLng(latitude: address.location.latitude, longitude: address.location.longitude)))
+}
