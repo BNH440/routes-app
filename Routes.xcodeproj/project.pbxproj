@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BD32B858DDD0009E562 /* Navigation.swift */; };
+		8D1D7BDA2B86CAEE0009E562 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BD92B86CAEE0009E562 /* MainView.swift */; };
+		8D1D7BDC2B86CAFF0009E562 /* CreateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BDB2B86CAFF0009E562 /* CreateRouteView.swift */; };
+		8D1D7BE02B86CC100009E562 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BDF2B86CC100009E562 /* Route.swift */; };
+		8D1D7BE22B86CC480009E562 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BE12B86CC480009E562 /* Address.swift */; };
+		8D1D7BE62B86CE3D0009E562 /* RouteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BE52B86CE3D0009E562 /* RouteDetailView.swift */; };
 		8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */; };
 		8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9E42B44CBBC0074B42D /* ContentView.swift */; };
 		8D80E9E72B44CBBD0074B42D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D80E9E62B44CBBD0074B42D /* Assets.xcassets */; };
@@ -20,6 +25,11 @@
 
 /* Begin PBXFileReference section */
 		8D1D7BD32B858DDD0009E562 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
+		8D1D7BD92B86CAEE0009E562 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		8D1D7BDB2B86CAFF0009E562 /* CreateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRouteView.swift; sourceTree = "<group>"; };
+		8D1D7BDF2B86CC100009E562 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		8D1D7BE12B86CC480009E562 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		8D1D7BE52B86CE3D0009E562 /* RouteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteDetailView.swift; sourceTree = "<group>"; };
 		8D80E9DF2B44CBBC0074B42D /* Routes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesApp.swift; sourceTree = "<group>"; };
 		8D80E9E42B44CBBC0074B42D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -42,6 +52,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D1D7BDD2B86CB180009E562 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				8D1D7BD92B86CAEE0009E562 /* MainView.swift */,
+				8D1D7BDB2B86CAFF0009E562 /* CreateRouteView.swift */,
+				8D1D7BE52B86CE3D0009E562 /* RouteDetailView.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		8D1D7BDE2B86CC070009E562 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8D1D7BDF2B86CC100009E562 /* Route.swift */,
+				8D1D7BE12B86CC480009E562 /* Address.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8D80E9D62B44CBBC0074B42D = {
 			isa = PBXGroup;
 			children = (
@@ -61,8 +90,10 @@
 		8D80E9E12B44CBBC0074B42D /* Routes */ = {
 			isa = PBXGroup;
 			children = (
+				8D1D7BDE2B86CC070009E562 /* Models */,
 				8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */,
 				8D80E9E42B44CBBC0074B42D /* ContentView.swift */,
+				8D1D7BDD2B86CB180009E562 /* Pages */,
 				8DEF485B2B8473430098A7CD /* LocationService.swift */,
 				8D1D7BD32B858DDD0009E562 /* Navigation.swift */,
 				8D80E9E62B44CBBD0074B42D /* Assets.xcassets */,
@@ -157,11 +188,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D1D7BE02B86CC100009E562 /* Route.swift in Sources */,
+				8D1D7BDC2B86CAFF0009E562 /* CreateRouteView.swift in Sources */,
 				8D80E9F62B489C900074B42D /* CapsuleLineSegment.swift in Sources */,
+				8D1D7BE62B86CE3D0009E562 /* RouteDetailView.swift in Sources */,
 				8D80E9F12B44E0860074B42D /* Schema.swift in Sources */,
+				8D1D7BE22B86CC480009E562 /* Address.swift in Sources */,
 				8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */,
 				8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */,
 				8D80E9E52B44CBBC0074B42D /* ContentView.swift in Sources */,
+				8D1D7BDA2B86CAEE0009E562 /* MainView.swift in Sources */,
 				8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

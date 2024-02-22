@@ -11,10 +11,10 @@ import MapKit
 
 // MARK: - Response
 struct Response: Codable {
-    let routes: [Route]
+    let routes: [SchemaRoute]
 }
 
-struct Route: Codable {
+struct SchemaRoute: Codable {
     let optimizedIntermediateWaypointIndex: [Int]
 }
 

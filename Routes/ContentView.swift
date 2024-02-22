@@ -9,24 +9,6 @@ import SwiftUI
 import Foundation
 import MapKit
 
-
-struct Address: Identifiable, Hashable {
-    let id = UUID()
-    let title: String
-    let location: CLLocationCoordinate2D
-    let addressText: String
-    
-    static func == (lhs: Address, rhs: Address) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-}
-
-
 struct ContentView: View {
     @ObserveInjection var inject
     
