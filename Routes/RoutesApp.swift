@@ -13,7 +13,7 @@ struct RoutesApp: App {
     @ObserveInjection var inject
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }

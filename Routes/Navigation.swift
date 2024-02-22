@@ -31,3 +31,6 @@ func openGoogleMaps(origin: Address, destination: Address, locations: [Address])
         UIApplication.shared.open(url)
     }
 }
+
+
+// TODO check for installed app before opening navigation

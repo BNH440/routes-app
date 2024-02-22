@@ -7,27 +7,14 @@
 
 import SwiftUI
 
-struct MainPage: View {
+struct MainView: View {
+    @ObserveInjection var inject
+
     var body: some View {
+        @ObserveInjection var inject
+
         NavigationView {
                     List {
-                        Section.init {
-                            HStack {
-                                Text("Routes")
-                                    .font(.largeTitle.bold())
-                                
-                                Spacer()
-                                
-                                Button(action: {
-                                    print("New")
-                                }){
-//                                    Image(systemName: "plus").bold().clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-                                    Label("New", systemImage: "plus").bold()
-                                }
-                                .buttonStyle(.bordered)
-                                
-                            }
-                        }
                         ForEach(routes, id: \.self) { route in
                             //                    NavigationLink(destination: nil) { // RouteDetailView(route: route)
                             HStack(alignment: .center) {
@@ -44,8 +31,6 @@ struct MainPage: View {
                                     .resizable()
                                     .frame(width: 50, height: 50)
                                     .foregroundColor(.gray)
-                                
-                                //                            StatusIndicator(status: todo.status)
                             }
                             //                    }
                 }
@@ -58,27 +43,35 @@ struct MainPage: View {
                     }
                     .tint(.red)
                 })
-                
             }
             .listStyle(.inset)
             .navigationTitle("Routes")
-            .navigationBarHidden(true)
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    Button(action: {
-//                        print("Create Route")
-//                    }){
-//                        Label("Create Route", systemImage: "plus.square.fill.on.square.fill")
-//                    }
-//                    .buttonStyle(.bordered)
-//                    
-//                }
-//            }
-        }
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        print("Settings")
+                    }){
+                        Image(systemName: "gearshape")
+                    }
+                    
+                }
+                ToolbarItemGroup(placement: .topBarTrailing){
+                        Button(action: {
+                            print("Sort Options")
+                        }){
+                            Image(systemName: "ellipsis.circle")
+                        }
+                        
+                        NavigationLink(destination: CreateRoutePage()){
+                            Image(systemName: "map.fill")
+                            Text("New").bold()
+                        }.buttonStyle(.bordered)
+                }
+            })
+        }.enableInjection()
     }
-
 }
 
 #Preview {
-    MainPage()
+    MainView()
 }
