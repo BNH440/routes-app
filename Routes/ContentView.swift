@@ -109,6 +109,8 @@ struct ContentView: View {
         @Binding var changeVar: ChangeVar
         @State private var locationService = LocationService(completer: .init())
         
+        @FocusState private var keyboardFocused: Bool
+        
         
             var body: some View {
                 VStack {
@@ -116,6 +118,10 @@ struct ContentView: View {
                         Image(systemName: "magnifyingglass")
                         TextField("Search for an address", text: $search)
                             .autocorrectionDisabled()
+                            .focused($keyboardFocused)
+                            .onAppear {
+                                keyboardFocused = true
+                            }
                             .onSubmit {
                                 Task {
                                     searchResults = (try? await locationService.search(with: search)) ?? []
@@ -127,30 +133,55 @@ struct ContentView: View {
                     .cornerRadius(8)
                     .foregroundColor(.primary)
                     
+                    if locationService.completions.isEmpty {
+                        Spacer()
 
-                    Spacer()
-
-                    List {
-                        ForEach(locationService.completions) { completion in
-                            Button(action: { didTapOnCompletion(completion) }) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(completion.title)
-                                        .font(.headline)
-                                        .fontDesign(.rounded)
-                                    Text(completion.subTitle)
-                                }
-                            }
-                            .listRowBackground(Color.clear)
+                        if search.isEmpty {
+                            Text("Start typing to search for an address")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.secondary)
+                        } else {
+                            VStack(spacing: 16) {
+                                        Image(systemName: "magnifyingglass")
+                                            .font(.system(size: 40, weight: .bold))
+                                            .foregroundColor(.gray)
+                                        Text("No results found")
+                                            .font(.title)
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding()
                         }
+                        Spacer()
+
                     }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
+                    else{
+                        Spacer()
+
+                        List {
+                            ForEach(locationService.completions) { completion in
+                                Button(action: { didTapOnCompletion(completion) }) {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(completion.title)
+                                            .font(.headline)
+                                            .fontDesign(.rounded)
+                                        Text(completion.subTitle)
+                                    }
+                                }
+                                .listRowBackground(Color.clear)
+                            }
+                        }
+                        .listStyle(.plain)
+                        .scrollContentBackground(.hidden)
+                    }
                 }
                 .onChange(of: search) {
                     locationService.update(queryFragment: search)
                 }
                 .padding()
-                .presentationDetents([.height(600), .large])
+                .presentationDragIndicator(.visible)
+                .presentationDetents([.medium])
                 .presentationBackground(.regularMaterial)
             }
 
