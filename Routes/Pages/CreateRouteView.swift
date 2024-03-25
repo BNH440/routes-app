@@ -6,17 +6,20 @@
 //
 
 import SwiftUI
+import Foundation
+import SwiftData
 
 struct CreateRoutePage: View {
     @ObserveInjection var inject
+    
+    @Environment(\.modelContext) var modelContext
+
     
     @State private var origin: Address? = nil
     @State private var locations: [Address] = []
     @State private var destination: Address? = nil
     @State private var name: String = ""
-    
-    @State private var responseState: Response? = nil;
-    
+        
     @State private var showModal = false
     
     enum ChangeVar {
@@ -26,20 +29,31 @@ struct CreateRoutePage: View {
     @State private var changeVar: ChangeVar = .origin
     
     
-    func calculateRoute () {
+    enum ValidationError: Error {
+        case nilValue
+        case pointListLength
+    }
+    
+    enum ResponseError: Error {
+        case requestError
+        case decodeError
+    }
+    
+    
+    func calculateRouteRequest () async throws -> Response {
         guard origin != nil else {
             print("Origin is nil")
-            return
+            throw ValidationError.nilValue
         }
         
         guard destination != nil else {
             print("Destination is nil")
-            return
+            throw ValidationError.nilValue
         }
         
         guard locations.count > 1 else {
             print("Not enough intermediate points")
-            return
+            throw ValidationError.pointListLength
         }
         
         let route = RouteRequest(
@@ -50,7 +64,7 @@ struct CreateRoutePage: View {
             optimizeWaypointOrder: StringBool.t
         )
         
-        let data = try! JSONEncoder().encode(route)
+        let body = try! JSONEncoder().encode(route)
         
         var request = URLRequest(url: URL(string: "https://routes.googleapis.com/directions/v2:computeRoutes")!)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -58,27 +72,13 @@ struct CreateRoutePage: View {
         request.addValue("routes.optimizedIntermediateWaypointIndex", forHTTPHeaderField: "X-Goog-FieldMask")
         
         request.httpMethod = "POST"
-        request.httpBody = data
+        request.httpBody = body
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                return
-            }
-            let response = try? JSONDecoder().decode(Response.self, from: data)
-            if(response == nil) {
-                print("Error decoding response")
-                return
-            }
-            print(response!)
-            responseState = response;
-            
-//            openAppleMaps(origin: origin!, destination: destination!, locations: responseState!.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] })
-            openGoogleMaps(origin: origin!, destination: destination!, locations: responseState!.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] })
-            return
-        }
+        let (resultData, _) = try await URLSession.shared.data(for: request);
+
+        let response = try JSONDecoder().decode(Response.self, from: resultData)
         
-        task.resume()
+        return response
     }
     
     struct AddressSheet : View {
@@ -188,6 +188,24 @@ struct CreateRoutePage: View {
             }
     }
     
+    @State var isLoading = false;
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
+    func calculateRoute() {
+        Task {
+            do {
+                isLoading = true;
+                let response = try await calculateRouteRequest()
+                isLoading = false;
+                modelContext.insert(Route(id: UUID(), title: name, locations: locations, origin: origin!, destination: destination!, idealRoute: response.routes[0].optimizedIntermediateWaypointIndex, idealRouteGenerationDate: .now, creationDate: .now))
+                self.presentationMode.wrappedValue.dismiss()
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+    }
+        
     var body: some View {
         @ObserveInjection var inject
         
@@ -259,10 +277,10 @@ struct CreateRoutePage: View {
 //                                           ["Destination: \(destination!.title)"])
 //                    }
             Spacer()
-            
+
             Button(action: calculateRoute, label: {
                 Text("Create Route")
-            })
+            }).disabled(isLoading)
             .buttonStyle(.bordered)
             .controlSize(.extraLarge)
             .tint(.accentColor)

@@ -12,7 +12,7 @@ import MapKit
 func openAppleMaps(origin: Address, destination: Address, locations: [Address]) {
     let placemarks = [origin] + locations + [destination]
     let mapItems = placemarks.map { placemark in
-        let item = MKMapItem(placemark: MKPlacemark(coordinate: placemark.location))
+        let item = MKMapItem(placemark: MKPlacemark(coordinate: placemark.location.location))
         item.name = placemark.title
         return item
     }

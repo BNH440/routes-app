@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 @_exported import Inject
 
 @main
@@ -15,5 +16,6 @@ struct RoutesApp: App {
         WindowGroup {
             MainView()
         }
+        .modelContainer(for: Route.self)
     }
 }
