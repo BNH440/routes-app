@@ -85,5 +85,9 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Route.self, configurations: config)
+
+    return MainView()
+        .modelContainer(container)
 }
