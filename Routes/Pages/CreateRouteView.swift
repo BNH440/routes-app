@@ -195,13 +195,20 @@ struct CreateRoutePage: View {
     func calculateRoute() {
         Task {
             do {
-                isLoading = true;
+                withAnimation {
+                    isLoading = true;
+                }
                 let response = try await calculateRouteRequest()
-                isLoading = false;
+                withAnimation {
+                    isLoading = false
+                }
                 modelContext.insert(Route(id: UUID(), title: name, locations: locations, origin: origin!, destination: destination!, idealRoute: response.routes[0].optimizedIntermediateWaypointIndex, idealRouteGenerationDate: .now, creationDate: .now))
                 self.presentationMode.wrappedValue.dismiss()
             } catch {
                 print("Error: \(error)")
+                withAnimation {
+                    isLoading = false;
+                }
             }
         }
     }
@@ -279,13 +286,19 @@ struct CreateRoutePage: View {
             Spacer()
 
             Button(action: calculateRoute, label: {
-                Text("Create Route")
+                if isLoading {
+                    ProgressView()
+                }
+                else {
+                    Text("Create Route")
+                }
             }).disabled(isLoading)
             .buttonStyle(.bordered)
             .controlSize(.extraLarge)
             .tint(.accentColor)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
             .disabled(origin == nil || destination == nil || locations.count < 2 || name == "")
+            .transition(.slide)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(24)

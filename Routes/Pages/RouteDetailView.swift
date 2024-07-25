@@ -18,8 +18,64 @@ struct RouteDetailView: View {
     }
     
     var body: some View {
+        var waypoints: [MKMapItem] {
+            var items = [MKMapItem]()
+            items.append(MKMapItem(placemark: MKPlacemark(coordinate: route.origin.location.location)))
+            for point in route.idealRoute {
+                let location = route.locations[point]
+                let placemark = MKPlacemark(coordinate: location.location.location)
+                let mapItem = MKMapItem(placemark: placemark)
+                mapItem.name = location.title
+                items.append(mapItem)
+            }
+            items.append(MKMapItem(placemark: MKPlacemark(coordinate: route.destination.location.location)))
+            return items
+        }
+        
         VStack {
+            // show new map view with waypoints
+            Button("Open in Apple Maps") {
+                openAppleMaps(origin: route.origin, destination: route.destination, locations: route.idealRoute.map { route.locations[$0] })
 
+            }
+            Button("Open in Google Maps") {
+                openGoogleMaps(origin: route.origin, destination: route.destination, locations: route.idealRoute.map { route.locations[$0] })
+            }
+            
+
+            List {
+                Section(header: Text("Route Details")) {
+                    HStack {
+                        Text("Title")
+                        Spacer()
+                        Text(route.title)
+                    }
+                    HStack {
+                        Text("Origin")
+                        Spacer()
+                        Text(route.origin.title)
+                    }
+                    HStack {
+                        Text("Destination")
+                        Spacer()
+                        Text(route.destination.title)
+                    }
+                    HStack {
+                        Text("Ideal Route Generation Date")
+                        Spacer()
+                        Text(route.idealRouteGenerationDate, style: .date)
+                    }
+                }
+                Section(header: Text("Locations")) {
+                    ForEach(route.locations) { location in
+                        HStack {
+                            Text(location.title)
+                            Spacer()
+                            Text(location.addressText)
+                        }
+                    }
+                }
+            }
         }.navigationTitle(route.title)
     }
 }

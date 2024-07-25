@@ -1,4 +1,5 @@
 {
+  "originHash" : "28d4525f7296ce4d7588dee4d6a849ce12655fd8fec151bc5086ef3a0a5464e2",
   "pins" : [
     {
       "identity" : "inject",
@@ -10,5 +11,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D0B64382BD2E97000EE2669 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0B64372BD2E97000EE2669 /* Inject */; };
 		8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BD32B858DDD0009E562 /* Navigation.swift */; };
 		8D1D7BDA2B86CAEE0009E562 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BD92B86CAEE0009E562 /* MainView.swift */; };
 		8D1D7BDC2B86CAFF0009E562 /* CreateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D1D7BDB2B86CAFF0009E562 /* CreateRouteView.swift */; };
@@ -18,12 +19,12 @@
 		8D80E9E72B44CBBD0074B42D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D80E9E62B44CBBD0074B42D /* Assets.xcassets */; };
 		8D80E9EA2B44CBBD0074B42D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D80E9E92B44CBBD0074B42D /* Preview Assets.xcassets */; };
 		8D80E9F12B44E0860074B42D /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F02B44E0860074B42D /* Schema.swift */; };
-		8D80E9F42B4607280074B42D /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 8D80E9F32B4607280074B42D /* Inject */; };
 		8D80E9F62B489C900074B42D /* CapsuleLineSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */; };
 		8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEF485B2B8473430098A7CD /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D0B64342BD2E8C300EE2669 /* iOSInjection.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = iOSInjection.bundle; path = ../../../../../Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle; sourceTree = "<group>"; };
 		8D1D7BD32B858DDD0009E562 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		8D1D7BD92B86CAEE0009E562 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		8D1D7BDB2B86CAFF0009E562 /* CreateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRouteView.swift; sourceTree = "<group>"; };
@@ -37,6 +38,7 @@
 		8D80E9E92B44CBBD0074B42D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D80E9F02B44E0860074B42D /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLineSegment.swift; sourceTree = "<group>"; };
+		8D9D9C452BB1F10C00C1EC1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DEF485B2B8473430098A7CD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,13 +47,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D80E9F42B4607280074B42D /* Inject in Frameworks */,
+				8D0B64382BD2E97000EE2669 /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8D0B64332BD2E8C200EE2669 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D0B64342BD2E8C300EE2669 /* iOSInjection.bundle */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8D1D7BDD2B86CB180009E562 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -76,6 +86,7 @@
 			children = (
 				8D80E9E12B44CBBC0074B42D /* Routes */,
 				8D80E9E02B44CBBC0074B42D /* Products */,
+				8D0B64332BD2E8C200EE2669 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +101,7 @@
 		8D80E9E12B44CBBC0074B42D /* Routes */ = {
 			isa = PBXGroup;
 			children = (
+				8D9D9C452BB1F10C00C1EC1B /* Info.plist */,
 				8D1D7BDE2B86CC070009E562 /* Models */,
 				8D80E9E22B44CBBC0074B42D /* RoutesApp.swift */,
 				8D80E9E42B44CBBC0074B42D /* ContentView.swift */,
@@ -129,7 +141,7 @@
 			);
 			name = Routes;
 			packageProductDependencies = (
-				8D80E9F32B4607280074B42D /* Inject */,
+				8D0B64372BD2E97000EE2669 /* Inject */,
 			);
 			productName = Routes;
 			productReference = 8D80E9DF2B44CBBC0074B42D /* Routes.app */;
@@ -335,6 +347,7 @@
 				DEVELOPMENT_TEAM = 98TJZNAZQK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Routes/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -369,6 +382,7 @@
 				DEVELOPMENT_TEAM = 98TJZNAZQK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Routes/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -423,7 +437,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8D80E9F32B4607280074B42D /* Inject */ = {
+		8D0B64372BD2E97000EE2669 /* Inject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8D80E9F22B4607280074B42D /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
