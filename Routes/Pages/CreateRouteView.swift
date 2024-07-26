@@ -217,92 +217,96 @@ struct CreateRoutePage: View {
         @ObserveInjection var inject
         
         VStack(alignment: .leading) {
-            VStack (alignment: .leading){
-                HStack{
-                    Text("Name: ").bold()
-                    TextField("Enter a name", text: $name)
-                        .textFieldStyle(.roundedBorder)
-                        .padding()
+            TextField("Route Name", text: $name)
+                .textFieldStyle(PlainTextFieldStyle())
+                .font(.title) // Make the text field title sized
+                .bold()
+                .padding(.bottom, 20)
+            
+            HStack{
+                Text("Origin ").bold().font(.title3)
+                Button(origin?.title ?? "Select...") {
+                    changeVar = .origin
+                    showModal = true
                 }
-                
-                HStack{
-                    Text("Origin: ").bold()
-                    Button(origin?.title ?? "Select...") {
-                        changeVar = .origin
-                        showModal = true
-                    }
-                    .sheet(isPresented: $showModal) {
-                        AddressSheet(showModal: $showModal, locations: $locations, origin: $origin, destination: $destination, changeVar: $changeVar)
-                    }
-                    .buttonStyle(.bordered)
+                .sheet(isPresented: $showModal) {
+                    AddressSheet(showModal: $showModal, locations: $locations, origin: $origin, destination: $destination, changeVar: $changeVar)
                 }
-                
-                Text("Intermediate Points: ").bold()
-                
-                List{
-                    ForEach(Array(locations.enumerated()), id: \.1) { index, loc in
-                        Text(loc.title).swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
-                            Button(action: {
-                                print("Delete")
-                                locations.remove(at: index)
-                            }){
-                                Label("Delete", systemImage: "trash")
-                            }
-                            .tint(.red)
-                        })
-                    }
+                .buttonStyle(.bordered)
+            }
+            
+            HStack{
+                Text("Destination ").bold().font(.title3)
+                Button(destination?.title ?? "Select...") {
+                    changeVar = .destination
+                    showModal = true
                 }
-                .listStyle(.inset)
-                
+                .sheet(isPresented: $showModal) {
+                    AddressSheet(showModal: $showModal, locations: $locations, origin: $origin, destination: $destination, changeVar: $changeVar)
+                }
+                .buttonStyle(.bordered)
+            }
+            
+            HStack{
+                Text("Waypoints ").bold().font(.title3)
+                Spacer()
                 Button(action: {
                     changeVar = .point
                     showModal = true
                 }){
                     Label("Add Location", systemImage: "plus.square.fill.on.square.fill")
-                  }
+                }
                 .sheet(isPresented: $showModal) {
                     AddressSheet(showModal: $showModal, locations: $locations, origin: $origin, destination: $destination, changeVar: $changeVar)
                 }
                 .buttonStyle(.bordered)
-
-                HStack{
-                    Text("Destination: ").bold()
-                    Button(destination?.title ?? "Select...") {
-                        changeVar = .destination
-                        showModal = true
+            }.padding(.top, 10)
+            
+            List{
+                ForEach(Array(locations.enumerated()), id: \.1) { index, loc in
+                    Text(loc.title).swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
+                        Button(action: {
+                            print("Delete")
+                            locations.remove(at: index)
+                        }){
+                            Label("Delete", systemImage: "trash")
+                        }
+                        .tint(.red)
+                    }).listRowBackground(Color.gray.opacity(0.1))
+                }
+            }.scrollContentBackground(.hidden).contentMargins(.all, 5, for: .scrollContent).padding(.top, 10)
+//                .frame(minHeight: 20, idealHeight: 20, maxHeight: CGFloat(locations.count) * 50)
+            
+            
+            //                    if(responseState != nil){
+            //                        CapsuleLineSegment(items: ["Origin: \(origin!.title)"] +
+            //                                           (responseState?.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0].title } ?? [""]) +
+            //                                           ["Destination: \(destination!.title)"])
+            //                    }
+            
+            HStack{
+                Spacer()
+                Button(action: calculateRoute, label: {
+                    if isLoading {
+                        ProgressView()
                     }
-                    .sheet(isPresented: $showModal) {
-                        AddressSheet(showModal: $showModal, locations: $locations, origin: $origin, destination: $destination, changeVar: $changeVar)
+                    else {
+                        Text("Generate Route")
                     }
+                }).disabled(isLoading)
                     .buttonStyle(.bordered)
-                }
+                    .controlSize(.extraLarge)
+                    .tint(.accentColor)
+                    .disabled(origin == nil || destination == nil || locations.count < 2 || name == "")
+                    .transition(.slide)
+                Spacer()
             }
-                    
-//                    if(responseState != nil){
-//                        CapsuleLineSegment(items: ["Origin: \(origin!.title)"] +
-//                                           (responseState?.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0].title } ?? [""]) +
-//                                           ["Destination: \(destination!.title)"])
-//                    }
-            Spacer()
-
-            Button(action: calculateRoute, label: {
-                if isLoading {
-                    ProgressView()
-                }
-                else {
-                    Text("Create Route")
-                }
-            }).disabled(isLoading)
-            .buttonStyle(.bordered)
-            .controlSize(.extraLarge)
-            .tint(.accentColor)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-            .disabled(origin == nil || destination == nil || locations.count < 2 || name == "")
-            .transition(.slide)
+            
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(24)
-        .navigationTitle("Create Route").enableInjection()
+        .navigationTitle("Create Route")
+        .navigationBarTitleDisplayMode(.inline)
+        .enableInjection()
     }
 }
 
