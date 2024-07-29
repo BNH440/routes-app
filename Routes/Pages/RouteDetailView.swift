@@ -21,53 +21,51 @@ struct RouteDetailView: View {
         var computedRoute = route.idealRoute.map { route.locations[$0] };
         
         VStack {
-            // show new map view with waypoints
-            Button("Open in Apple Maps") {
-                openAppleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
-
-            }
-            Button("Open in Google Maps") {
-                openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
-            }
-            
-
             List {
                 Section(header: Text("Route Details")) {
                     HStack {
-                        Text("Title")
+                        Text("Generation Date")
                         Spacer()
-                        Text(route.title)
+                        Text(route.idealRouteGenerationDate, style: .date)
                     }
+                    
+                    // show new map view with waypoints
+                    Button("Open in Apple Maps") {
+                        openAppleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
+
+                    }
+                    Button("Open in Google Maps") {
+                        openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
+                    }
+                }
+                
+                StaticMapView(coordinates: [route.origin.location.location] + addressArrayToCLLocation2DArray(addresses: computedRoute) + [route.destination.location.location])
+                    .frame(height: 450)
+//                    .edgesIgnoringSafeArea(.all)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                
+                
+                Section(header: Text("Locations")) {
                     HStack {
                         Text("Origin")
                         Spacer()
                         Text(route.origin.title)
+                    }
+                    ForEach(computedRoute) { location in
+                        HStack {
+                            Text("Waypoint \((computedRoute.firstIndex(of: location) ?? 0)+1)")
+                            Spacer()
+                            Text(location.title)
+                        }
                     }
                     HStack {
                         Text("Destination")
                         Spacer()
                         Text(route.destination.title)
                     }
-                    HStack {
-                        Text("Ideal Route Generation Date")
-                        Spacer()
-                        Text(route.idealRouteGenerationDate, style: .date)
-                    }
-                }
-                Section(header: Text("Locations")) {
-                    ForEach(computedRoute) { location in
-                        HStack {
-                            Text(location.title)
-                            Spacer()
-                            Text(location.addressText)
-                        }
-                    }
                 }
             }
-            
-            StaticMapView(coordinates: [route.origin.location.location] + addressArrayToCLLocation2DArray(addresses: computedRoute) + [route.destination.location.location])
-                .edgesIgnoringSafeArea(.all)
-        }.navigationTitle(route.title)
+        }.navigationTitle(route.title).enableInjection()
     }
 }
 

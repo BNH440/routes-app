@@ -77,7 +77,7 @@ struct StaticMapView: UIViewRepresentable {
         }
         
         let center = CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2)
-        let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 1.5, longitudeDelta: (maxLon - minLon) * 1.5) // 1.2
+        let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 1.3, longitudeDelta: (maxLon - minLon) * 1.3) // 1.2
         
         return MKCoordinateRegion(center: center, span: span)
     }
