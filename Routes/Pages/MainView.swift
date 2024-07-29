@@ -21,7 +21,7 @@ struct RouteListView: View {
     var body: some View {
         List {
                 ForEach(routes, id: \.id) { route in
-                    NavigationLink(destination: RouteDetailView(routeID: route.id)){
+                    NavigationLink(destination: RouteDetailView(routeID: route.persistentModelID)){
                         HStack(alignment: .center) {
                             VStack(alignment: .leading) {
                                 Text(route.title)

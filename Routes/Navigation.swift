@@ -9,6 +9,10 @@ import Foundation
 import SwiftUI
 import MapKit
 
+func addressArrayToCLLocation2DArray(addresses: [Address]) -> [CLLocationCoordinate2D] {
+    addresses.map { $0.location.location }
+}
+
 func openAppleMaps(origin: Address, destination: Address, locations: [Address]) {
     let placemarks = [origin] + locations + [destination]
     let mapItems = placemarks.map { placemark in

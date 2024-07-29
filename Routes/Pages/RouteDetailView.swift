@@ -11,35 +11,23 @@ import SwiftData
 import Foundation
 
 struct RouteDetailView: View {
-    var routeID: UUID
+    var routeID: PersistentIdentifier
     @Query var routes: [Route]
-    var route: Route {
-        routes.first(where: { $0.id == routeID })!
-    }
+    @Environment(\.modelContext) var modelContext
+
     
     var body: some View {
-        var waypoints: [MKMapItem] {
-            var items = [MKMapItem]()
-            items.append(MKMapItem(placemark: MKPlacemark(coordinate: route.origin.location.location)))
-            for point in route.idealRoute {
-                let location = route.locations[point]
-                let placemark = MKPlacemark(coordinate: location.location.location)
-                let mapItem = MKMapItem(placemark: placemark)
-                mapItem.name = location.title
-                items.append(mapItem)
-            }
-            items.append(MKMapItem(placemark: MKPlacemark(coordinate: route.destination.location.location)))
-            return items
-        }
+        var route: Route = modelContext.model(for: routeID) as! Route
+        var computedRoute = route.idealRoute.map { route.locations[$0] };
         
         VStack {
             // show new map view with waypoints
             Button("Open in Apple Maps") {
-                openAppleMaps(origin: route.origin, destination: route.destination, locations: route.idealRoute.map { route.locations[$0] })
+                openAppleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
 
             }
             Button("Open in Google Maps") {
-                openGoogleMaps(origin: route.origin, destination: route.destination, locations: route.idealRoute.map { route.locations[$0] })
+                openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
             }
             
 
@@ -67,7 +55,7 @@ struct RouteDetailView: View {
                     }
                 }
                 Section(header: Text("Locations")) {
-                    ForEach(route.locations) { location in
+                    ForEach(computedRoute) { location in
                         HStack {
                             Text(location.title)
                             Spacer()
@@ -76,6 +64,9 @@ struct RouteDetailView: View {
                     }
                 }
             }
+            
+            StaticMapView(coordinates: [route.origin.location.location] + addressArrayToCLLocation2DArray(addresses: computedRoute) + [route.destination.location.location])
+                .edgesIgnoringSafeArea(.all)
         }.navigationTitle(route.title)
     }
 }
