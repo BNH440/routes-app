@@ -96,7 +96,7 @@ struct StaticMapView: UIViewRepresentable {
             
             request.source = MKMapItem(placemark: source)
             request.destination = MKMapItem(placemark: destination)
-            request.transportType = .automobile
+            request.transportType = .automobile // TODO - make this transport type var dynamic according to the route settings
             
             let directions = MKDirections(request: request)
             directions.calculate { response, error in
@@ -115,7 +115,7 @@ struct StaticMapView: UIViewRepresentable {
                 } else if index == coordinates.count - 1 {
                     annotation.title = "End"
                 } else {
-                    annotation.title = "Waypoint \(index-1)"
+                    annotation.title = "Waypoint \(index)"
                 }
                 mapView.addAnnotation(annotation)
             }
