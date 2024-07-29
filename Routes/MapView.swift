@@ -37,7 +37,7 @@ struct StaticMapView: UIViewRepresentable {
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        mapView.isUserInteractionEnabled = false
+        mapView.isUserInteractionEnabled = true
         
 //        // Center the map on the first coordinate
 //        if let firstCoordinate = coordinates.first {

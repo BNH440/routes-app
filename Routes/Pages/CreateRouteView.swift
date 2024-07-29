@@ -203,7 +203,9 @@ struct CreateRoutePage: View {
                     isLoading = false
                 }
                 modelContext.insert(Route(id: UUID(), title: name, locations: locations, origin: origin!, destination: destination!, idealRoute: response.routes[0].optimizedIntermediateWaypointIndex, idealRouteGenerationDate: .now, creationDate: .now))
-                self.presentationMode.wrappedValue.dismiss()
+                DispatchQueue.main.async {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
             } catch {
                 print("Error: \(error)")
                 withAnimation {
