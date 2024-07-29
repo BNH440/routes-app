@@ -31,12 +31,11 @@ extension Coordinate2D {
     }
 }
 
-@Model
-class Address: Identifiable, Hashable {
-    let id = UUID()
-    let title: String
-    let location: Coordinate2D
-    let addressText: String
+struct Address: Codable, Identifiable, Equatable, Hashable {
+    var id = UUID()
+    var title: String
+    var location: Coordinate2D
+    var addressText: String
     
     static func == (lhs: Address, rhs: Address) -> Bool {
         lhs.id == rhs.id

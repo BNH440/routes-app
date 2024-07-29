@@ -115,7 +115,7 @@ struct StaticMapView: UIViewRepresentable {
                 } else if index == coordinates.count - 1 {
                     annotation.title = "End"
                 } else {
-                    annotation.title = "Waypoint \(index)"
+                    annotation.title = "Waypoint \(index-1)"
                 }
                 mapView.addAnnotation(annotation)
             }
