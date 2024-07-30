@@ -19,7 +19,26 @@ struct RouteListView: View {
     }
 
     var body: some View {
-        List {
+        if (routes.isEmpty){
+            VStack {
+                Image(systemName: "map")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(.gray)
+                Text("No routes created yet")
+                    .foregroundColor(.gray)
+                    .padding(.vertical, 10)
+                NavigationLink(destination: CreateRoutePage()){
+//                    Image(systemName: "map.fill")
+                    Text("Create a Route").bold()
+                }.buttonStyle(.bordered)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+        }
+        else{
+            List {
                 ForEach(routes, id: \.id) { route in
                     NavigationLink(destination: RouteDetailView(routeID: route.persistentModelID)){
                         HStack(alignment: .center) {
@@ -47,8 +66,9 @@ struct RouteListView: View {
                         })}
                 }
                 .padding()
+            }
+            .listStyle(.inset)
         }
-        .listStyle(.inset)
     }
 }
 
@@ -61,13 +81,13 @@ struct MainView: View {
     @Query var routes: [Route]
     @Environment(\.modelContext) var modelContext
     
-    func addExampleData() {
-        if(routes.isEmpty){
-            for route in exampleRouteArray {
-                modelContext.insert(route);
-            }
-        }
-    }
+//    func addExampleData() {
+//        if(routes.isEmpty){
+//            for route in exampleRouteArray {
+//                modelContext.insert(route);
+//            }
+//        }
+//    }
     
 //    enum SortOptions {
 //        case title
@@ -143,13 +163,15 @@ struct MainView: View {
                     Label("Sort", systemImage: "ellipsis.circle")
                 }
                 
+            if (!routes.isEmpty){
                 NavigationLink(destination: CreateRoutePage()){
                     Image(systemName: "map.fill")
                     Text("New").bold()
                 }.buttonStyle(.bordered)
+            }
         }
     })
-        }.onAppear(perform: addExampleData).enableInjection()
+        }.enableInjection()
     }
 }
 
