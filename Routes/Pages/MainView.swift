@@ -126,6 +126,7 @@ struct MainView: View {
 //    @State private var sortDirection = SortOrder.reverse
     @State private var sortOrder = SortDescriptor(\Route.creationDate, order: .reverse)
 
+    @State private var isSettingsPresented = false
     var body: some View {
         @ObserveInjection var inject
 
@@ -136,11 +137,12 @@ struct MainView: View {
     .toolbar(content: {
         ToolbarItem(placement: .topBarLeading) {
             Button(action: {
-                print("Settings")
+                isSettingsPresented.toggle()
             }){
                 Image(systemName: "gearshape")
+            }.sheet(isPresented: $isSettingsPresented) {
+                SettingsView(isPresented: $isSettingsPresented)
             }
-            
         }
         ToolbarItemGroup(placement: .topBarTrailing){
                 Menu {
