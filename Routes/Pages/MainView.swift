@@ -73,6 +73,10 @@ struct RouteListView: View {
 }
 
 
+enum E_SortKey: String {
+    case creationDate
+    case title
+}
 
 
 struct MainView: View {
@@ -80,53 +84,12 @@ struct MainView: View {
     
     @Query var routes: [Route]
     @Environment(\.modelContext) var modelContext
-    
-//    func addExampleData() {
-//        if(routes.isEmpty){
-//            for route in exampleRouteArray {
-//                modelContext.insert(route);
-//            }
-//        }
-//    }
-    
-//    enum SortOptions {
-//        case title
-//        case creationDate
-//        
-//        var description : String {
-//          switch self {
-//              case .title: return "Title"
-//              case .creationDate: return "Creation Date"
-//          }
-//        }
-//        
-//        var routeProp : Any {
-//            switch self {
-//                case .title: return \Route.title
-//                case .creationDate: return \Route.creationDate
-//            }
-//        }
-//    }
-//    
-//    enum SortDirection {
-//        case forwards
-//        case reverse
-//        
-//        var description : String {
-//          switch self {
-//              case .forwards: return "Forwards"
-//              case .reverse: return "Reverse"
-//          }
-//        }
-//    }
-//    
-//    @State private var sortOption: SortOptions = .creationDate;
-//    @State private var sortDirection: SortDirection = .reverse;
-    
-//    @State private var sortDirection = SortOrder.reverse
     @State private var sortOrder = SortDescriptor(\Route.creationDate, order: .reverse)
-
+//    @State private var sortKey: KeyPath<Route, Any> = \Route.title
+    @State private var sortKey: E_SortKey = .creationDate
+    @State private var sortDirection: SortOrder = .reverse
     @State private var isSettingsPresented = false
+    
     var body: some View {
         @ObserveInjection var inject
 
@@ -145,25 +108,40 @@ struct MainView: View {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing){
-                Menu {
-                    Menu {
-                        Picker(selection: $sortOrder, label: Text("Sorting options")) {
-                            Text("Date Created").tag(SortDescriptor(\Route.creationDate, order: .reverse))
-                            Text("Title").tag(SortDescriptor(\Route.title))
-                        }
-                    } label: {
-                        Label("Sort", systemImage: "arrow.up.arrow.down")
+            Menu {
+                Picker(selection: $sortKey, label: Text("Sort By")) {
+                    Text("Date Created").tag(E_SortKey.creationDate)
+                    Text("Title").tag(E_SortKey.title)
+                }.onChange(of: sortKey) { _ in
+                    if (sortKey == E_SortKey.creationDate){
+                        sortOrder = SortDescriptor(\.creationDate, order: sortDirection)
                     }
-//                    Menu("Direction") {
-//                        Picker(selection: $sortDirection, label: Text("Sorting direction")) {
-//                            Text("Forwards").tag(SortOrder.forward)
-//                            Text("Reverse").tag(SortOrder.reverse)
-//                        }
-//                    }
+                    else{
+                        sortOrder = SortDescriptor(\.title, order: sortDirection)
+                    }
                 }
-                label: {
-                    Label("Sort", systemImage: "ellipsis.circle")
+                
+                Picker(selection: $sortDirection, label: Text("Direction")) {
+                    if (sortKey == E_SortKey.creationDate){
+                        Text("Newest First").tag(SortOrder.reverse)
+                        Text("Oldest First").tag(SortOrder.forward)
+                    }
+                    else{
+                        Text("Forwards").tag(SortOrder.forward)
+                        Text("Reverse").tag(SortOrder.reverse)
+                    }
+                }.onChange(of: sortDirection) { _ in
+                    if (sortKey == E_SortKey.creationDate){
+                        sortOrder = SortDescriptor(\.creationDate, order: sortDirection)
+                    }
+                    else{
+                        sortOrder = SortDescriptor(\.title, order: sortDirection)
+                    }
                 }
+            }
+            label: {
+                Label("Sort Options", systemImage: "ellipsis.circle")
+            }
                 
             if (!routes.isEmpty){
                 NavigationLink(destination: CreateRoutePage()){

@@ -20,6 +20,7 @@
 		8D80E9F12B44E0860074B42D /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F02B44E0860074B42D /* Schema.swift */; };
 		8D80E9F62B489C900074B42D /* CapsuleLineSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */; };
 		8D83AE7E2C56F9570053F10B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D83AE7D2C56F9570053F10B /* MapView.swift */; };
+		8D83AE802C58754D0053F10B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D83AE7F2C58754D0053F10B /* SettingsView.swift */; };
 		8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEF485B2B8473430098A7CD /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,7 @@
 		8D80E9F02B44E0860074B42D /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleLineSegment.swift; sourceTree = "<group>"; };
 		8D83AE7D2C56F9570053F10B /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		8D83AE7F2C58754D0053F10B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8D9D9C452BB1F10C00C1EC1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DEF485B2B8473430098A7CD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +70,7 @@
 				8D1D7BD92B86CAEE0009E562 /* MainView.swift */,
 				8D1D7BDB2B86CAFF0009E562 /* CreateRouteView.swift */,
 				8D1D7BE52B86CE3D0009E562 /* RouteDetailView.swift */,
+				8D83AE7F2C58754D0053F10B /* SettingsView.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -209,6 +212,7 @@
 				8D1D7BE22B86CC480009E562 /* Address.swift in Sources */,
 				8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */,
 				8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */,
+				8D83AE802C58754D0053F10B /* SettingsView.swift in Sources */,
 				8D1D7BDA2B86CAEE0009E562 /* MainView.swift in Sources */,
 				8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */,
 			);
