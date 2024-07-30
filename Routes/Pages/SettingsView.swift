@@ -49,7 +49,12 @@ struct SettingsView: View {
                         ForEach(Theme.allCases, id: \.self) { theme in
                             Text(theme.rawValue).tag(theme.rawValue)
                         }
-                    }
+                    }.onChange(of: selectedTheme) { _ in
+                        print("Theme Changed")
+                        DispatchQueue.main.async {
+                            isPresented = false
+                        }
+                    } // TODO - see if I can solve the sheet not updating issue without this
                 }
             }
             .navigationTitle("Settings")
