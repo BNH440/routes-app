@@ -4,3 +4,6 @@ xcuserdata/
 ## Xcode 8 and earlier
 *.xcscmblueprint
 *.xccheckout
+
+Routes/Development.xcconfig
+Routes/Production.xcconfig

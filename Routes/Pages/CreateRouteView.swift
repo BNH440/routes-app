@@ -68,8 +68,9 @@ struct CreateRoutePage: View {
         
         var request = URLRequest(url: URL(string: "https://routes.googleapis.com/directions/v2:computeRoutes")!)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("AIzaSyBTA5p__tNNyJ4BDXQTgnZO1DphV8Grdcg", forHTTPHeaderField: "X-Goog-Api-Key")
+        request.addValue(EnvironmentVars.googleApiKey, forHTTPHeaderField: "X-Goog-Api-Key")
         request.addValue("routes.optimizedIntermediateWaypointIndex", forHTTPHeaderField: "X-Goog-FieldMask")
+        request.addValue("com.blakehaug.Routes", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
         
         request.httpMethod = "POST"
         request.httpBody = body
