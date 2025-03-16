@@ -1,13 +1,13 @@
 {
-  "originHash" : "28d4525f7296ce4d7588dee4d6a849ce12655fd8fec151bc5086ef3a0a5464e2",
+  "originHash" : "854e288d98f610136659a608597076475e59cd144d7f2033a2f471ab5dad0950",
   "pins" : [
     {
       "identity" : "inject",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzysztofzablocki/Inject.git",
       "state" : {
-        "revision" : "2057eb9819813b89fd2107e99608d2d20890d9c5",
-        "version" : "1.2.4"
+        "revision" : "728c56639ecb3df441d51d5bc6747329afabcfc9",
+        "version" : "1.5.2"
       }
     }
   ],
