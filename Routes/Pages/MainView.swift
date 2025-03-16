@@ -57,7 +57,9 @@ struct RouteListView: View {
                                 .foregroundColor(.gray)
                         }.swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                             Button(action: {
-                                modelContext.delete(route);
+                                withAnimation {
+                                    modelContext.delete(route);
+                                }
                                 print("Delete")
                             }){
                                 Label("Delete", systemImage: "trash")
@@ -66,8 +68,7 @@ struct RouteListView: View {
                         })}
                 }
                 .padding()
-            }
-            .listStyle(.inset)
+            }.animation(.easeOut, value: routes).listStyle(.inset)
         }
     }
 }
