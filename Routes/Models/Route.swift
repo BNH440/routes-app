@@ -19,6 +19,7 @@ class Route: Equatable, Hashable {
     var idealRoute: [Int]
     var idealRouteGenerationDate: Date
     var creationDate: Date
+    var snapshot: Data?
     
     static func == (lhs: Route, rhs: Route) -> Bool {
         lhs.id == rhs.id
@@ -28,7 +29,7 @@ class Route: Equatable, Hashable {
         hasher.combine(id)
     }
     
-    init(id: UUID, title: String, locations: [Address], origin: Address, destination: Address, idealRoute: [Int], idealRouteGenerationDate: Date, creationDate: Date = .now) {
+    init(id: UUID, title: String, locations: [Address], origin: Address, destination: Address, idealRoute: [Int], idealRouteGenerationDate: Date, creationDate: Date = .now, snapshot: Data? = nil) {
         self.id = id
         self.title = title
         self.locations = locations
@@ -37,6 +38,7 @@ class Route: Equatable, Hashable {
         self.idealRoute = idealRoute
         self.idealRouteGenerationDate = idealRouteGenerationDate
         self.creationDate = creationDate
+        self.snapshot = snapshot;
     }
 }
 

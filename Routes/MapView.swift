@@ -39,21 +39,31 @@ struct StaticMapView: UIViewRepresentable {
         mapView.delegate = context.coordinator
         mapView.isUserInteractionEnabled = true
         
-//        // Center the map on the first coordinate
-//        if let firstCoordinate = coordinates.first {
-//            let region = MKCoordinateRegion(center: firstCoordinate, span: MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10))
-//            mapView.setRegion(region, animated: true)
-//        }
-        
+        mapView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+
         // Center the map on the entire route
         let region = calculateRegion(for: coordinates)
-        mapView.setRegion(region, animated: true)
+        mapView.setRegion(region, animated: false)
         
         addRoute(to: mapView)
         addAnnotations(to: mapView)
         
         return mapView
     }
+    
+    func generateSnapshotUIView() -> MKMapView {
+        let mapView = MKMapView()
+        mapView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+        
+        // Center the map on the entire route
+        let region = calculateRegion(for: coordinates)
+        mapView.setRegion(region, animated: false)
+        
+        addRoute(to: mapView)
+        
+        return mapView
+    }
+
     
     private func calculateRegion(for coordinates: [CLLocationCoordinate2D]) -> MKCoordinateRegion {
         var minLat = coordinates.first?.latitude ?? 0.0
@@ -120,4 +130,11 @@ struct StaticMapView: UIViewRepresentable {
                 mapView.addAnnotation(annotation)
             }
         }
+    
+    func takeSnapshot(completion: @escaping (UIImage?) -> Void) {
+        let mapView = generateSnapshotUIView()
+        snapshotMap(from: mapView) { result in
+            completion(result);
+        }
+    }
 }

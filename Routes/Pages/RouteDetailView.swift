@@ -14,7 +14,6 @@ struct RouteDetailView: View {
     var routeID: PersistentIdentifier
     @Query var routes: [Route]
     @Environment(\.modelContext) var modelContext
-
     
     var body: some View {
         let route: Route = modelContext.model(for: routeID) as! Route
@@ -24,9 +23,11 @@ struct RouteDetailView: View {
             List {
                 Section(header: Text("Route Details")) {
                     HStack {
-                        Text("Generation Date")
+                        Text("Generated at")
                         Spacer()
-                        Text(route.idealRouteGenerationDate, style: .date)
+                        HStack {
+                            Text(route.idealRouteGenerationDate, style: .date)
+                        }
                     }
                     
                     // show new map view with waypoints
@@ -38,12 +39,6 @@ struct RouteDetailView: View {
                         openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
                     }
                 }
-                
-                StaticMapView(coordinates: [route.origin.location.location] + addressArrayToCLLocation2DArray(addresses: computedRoute) + [route.destination.location.location])
-                    .frame(height: 450)
-//                    .edgesIgnoringSafeArea(.all)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                
                 
                 Section(header: Text("Locations")) {
                     HStack {
@@ -63,8 +58,20 @@ struct RouteDetailView: View {
                         Spacer()
                         Text(route.destination.title)
                     }
+                    HStack(spacing: 0) {  // Adjust the spacing between items
+                        Text("Last Updated:").padding(.trailing, 6)
+                        Text(route.idealRouteGenerationDate, style: .date)
+                        Text("at").padding(.horizontal, 4)
+                        Text(route.idealRouteGenerationDate, style: .time)
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
                 }
-            }
+                
+                StaticMapView(coordinates: [route.origin.location.location] + addressArrayToCLLocation2DArray(addresses: computedRoute) + [route.destination.location.location])
+                    .frame(height: 450)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            }
         }.navigationTitle(route.title).enableInjection()
     }
 }

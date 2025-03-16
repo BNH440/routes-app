@@ -22,6 +22,7 @@
 		8D83AE7E2C56F9570053F10B /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D83AE7D2C56F9570053F10B /* MapView.swift */; };
 		8D83AE802C58754D0053F10B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D83AE7F2C58754D0053F10B /* SettingsView.swift */; };
 		8D83AE842C59A4F30053F10B /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D83AE832C59A4F30053F10B /* Environment.swift */; };
+		8D9E917B2D868DC1006F9EF5 /* SnapshotMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9E917A2D868DC1006F9EF5 /* SnapshotMap.swift */; };
 		8DEF485C2B8473430098A7CD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEF485B2B8473430098A7CD /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		8D83AE822C59A3DD0053F10B /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
 		8D83AE832C59A4F30053F10B /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		8D9D9C452BB1F10C00C1EC1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D9E917A2D868DC1006F9EF5 /* SnapshotMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotMap.swift; sourceTree = "<group>"; };
 		8DEF485B2B8473430098A7CD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +123,7 @@
 				8D80E9F02B44E0860074B42D /* Schema.swift */,
 				8D80E9F52B489C900074B42D /* CapsuleLineSegment.swift */,
 				8D83AE7D2C56F9570053F10B /* MapView.swift */,
+				8D9E917A2D868DC1006F9EF5 /* SnapshotMap.swift */,
 				8D83AE832C59A4F30053F10B /* Environment.swift */,
 			);
 			path = Routes;
@@ -222,6 +225,7 @@
 				8D1D7BD42B858DDD0009E562 /* Navigation.swift in Sources */,
 				8D83AE802C58754D0053F10B /* SettingsView.swift in Sources */,
 				8D1D7BDA2B86CAEE0009E562 /* MainView.swift in Sources */,
+				8D9E917B2D868DC1006F9EF5 /* SnapshotMap.swift in Sources */,
 				8D80E9E32B44CBBC0074B42D /* RoutesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

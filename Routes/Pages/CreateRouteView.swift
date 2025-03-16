@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 import SwiftData
+import MapKit
 
 struct CreateRoutePage: View {
     @ObserveInjection var inject
@@ -203,10 +204,22 @@ struct CreateRoutePage: View {
                 withAnimation {
                     isLoading = false
                 }
-                modelContext.insert(Route(id: UUID(), title: name, locations: locations, origin: origin!, destination: destination!, idealRoute: response.routes[0].optimizedIntermediateWaypointIndex, idealRouteGenerationDate: .now, creationDate: .now))
-                DispatchQueue.main.async {
-                    self.presentationMode.wrappedValue.dismiss()
+                
+                let computedRoute = response.routes[0].optimizedIntermediateWaypointIndex.map { locations[$0] };
+                let staticMapView = StaticMapView(coordinates: [origin!.location.location] + addressArrayToCLLocation2DArray(addresses: computedRoute) + [destination!.location.location])
+                
+                staticMapView.takeSnapshot() { image in
+                    guard let snapshot = image else { return }
+                    if let imageData = snapshot.pngData() {
+                        modelContext.insert(Route(id: UUID(), title: name, locations: locations, origin: origin!, destination: destination!, idealRoute: response.routes[0].optimizedIntermediateWaypointIndex, idealRouteGenerationDate: .now, creationDate: .now, snapshot: imageData))
+                        DispatchQueue.main.async {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
+                    } else {
+                        print("Failed to convert UIImage to Data")
+                    }
                 }
+
             } catch {
                 print("Error: \(error)")
                 withAnimation {
