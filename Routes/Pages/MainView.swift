@@ -51,14 +51,20 @@ struct RouteListView: View {
                             }
                             Spacer()
                             // placeholder map
-                            Image(uiImage: (route.snapshot != nil ? UIImage(data: route.snapshot!) : UIImage(systemName: "map")) ?? UIImage())
-                                .resizable()
-                                .frame(width: 65, height: 65)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .foregroundColor(.gray)
-                                .padding(.trailing, 10)
+                            route.snapshot != nil ?
+                                Image(uiImage: UIImage(data: route.snapshot!) ?? UIImage())
+                                    .resizable()
+                                    .frame(width: 65, height: 65)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 10)
+                                : Image(systemName: "map")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 10)
 
-                            
                         }.swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                             Button(action: {
                                 withAnimation {
