@@ -49,7 +49,7 @@ struct SettingsView: View {
                         ForEach(Theme.allCases, id: \.self) { theme in
                             Text(theme.rawValue).tag(theme.rawValue)
                         }
-                    }.onChange(of: selectedTheme) { _ in
+                    }.onChange(of: selectedTheme) {
                         print("Theme Changed")
                         DispatchQueue.main.async {
                             isPresented = false

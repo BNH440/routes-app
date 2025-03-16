@@ -17,8 +17,8 @@ struct RouteDetailView: View {
 
     
     var body: some View {
-        var route: Route = modelContext.model(for: routeID) as! Route
-        var computedRoute = route.idealRoute.map { route.locations[$0] };
+        let route: Route = modelContext.model(for: routeID) as! Route
+        let computedRoute = route.idealRoute.map { route.locations[$0] };
         
         VStack {
             List {

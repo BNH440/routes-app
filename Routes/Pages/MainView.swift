@@ -113,7 +113,7 @@ struct MainView: View {
                 Picker(selection: $sortKey, label: Text("Sort By")) {
                     Text("Date Created").tag(E_SortKey.creationDate)
                     Text("Title").tag(E_SortKey.title)
-                }.onChange(of: sortKey) { _ in
+                }.onChange(of: sortKey) {
                     if (sortKey == E_SortKey.creationDate){
                         sortOrder = SortDescriptor(\.creationDate, order: sortDirection)
                     }
@@ -131,7 +131,7 @@ struct MainView: View {
                         Text("Forwards").tag(SortOrder.forward)
                         Text("Reverse").tag(SortOrder.reverse)
                     }
-                }.onChange(of: sortDirection) { _ in
+                }.onChange(of: sortDirection) {
                     if (sortKey == E_SortKey.creationDate){
                         sortOrder = SortDescriptor(\.creationDate, order: sortDirection)
                     }
