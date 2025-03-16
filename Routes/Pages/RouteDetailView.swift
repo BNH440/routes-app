@@ -14,33 +14,31 @@ struct RouteDetailView: View {
     var routeID: PersistentIdentifier
     @Query var routes: [Route]
     @Environment(\.modelContext) var modelContext
+    @State private var showingActionSheet = false
     
+    enum MapApp: String {
+        case appleMaps
+        case googleMaps
+    }
+    
+    func setDefaultMapApp(mapApp: MapApp) {
+        UserDefaults.standard.set(mapApp.rawValue, forKey: "defaultMapApp")
+    }
+
+    func getDefaultMapApp() -> MapApp? {
+        if let storedValue = UserDefaults.standard.string(forKey: "defaultMapApp") {
+            return MapApp(rawValue: storedValue)  // Ensure it's properly cast to MapType
+        }
+        return nil
+    }
+
     var body: some View {
         let route: Route = modelContext.model(for: routeID) as! Route
         let computedRoute = route.idealRoute.map { route.locations[$0] };
         
         VStack {
             List {
-                Section(header: Text("Route Details")) {
-                    HStack {
-                        Text("Generated at")
-                        Spacer()
-                        HStack {
-                            Text(route.idealRouteGenerationDate, style: .date)
-                        }
-                    }
-                    
-                    // show new map view with waypoints
-                    Button("Open in Apple Maps") {
-                        openAppleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
-
-                    }
-                    Button("Open in Google Maps") {
-                        openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
-                    }
-                }
-                
-                Section(header: Text("Locations")) {
+                Section() {
                     HStack {
                         Text("Origin")
                         Spacer()
@@ -58,6 +56,38 @@ struct RouteDetailView: View {
                         Spacer()
                         Text(route.destination.title)
                     }
+
+                    Button("Open in Maps") {
+                        // TODO: check that google maps is actually installed before showing sheet
+                        if (getDefaultMapApp() == nil) {
+                            showingActionSheet.toggle()
+                        }
+                        else{
+                            let chosenApp = getDefaultMapApp()!
+                            switch chosenApp {
+                            case .appleMaps:
+                                openAppleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
+                            case .googleMaps:
+                                openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
+                            }
+                        }
+                    }.actionSheet(isPresented: $showingActionSheet) {
+                        ActionSheet(
+                            title: Text("Choose Default App"),
+                            buttons: [
+                                .default(Text("Apple Maps")) {
+                                    setDefaultMapApp(mapApp: .appleMaps)
+                                    openAppleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
+                                },
+                                .default(Text("Google Maps")) {
+                                    setDefaultMapApp(mapApp: .googleMaps)
+                                    openGoogleMaps(origin: route.origin, destination: route.destination, locations: computedRoute)
+                                },
+                                .cancel()
+                            ]
+                        )
+                    }
+                    
                     HStack(spacing: 0) {  // Adjust the spacing between items
                         Text("Last Updated:").padding(.trailing, 6)
                         Text(route.idealRouteGenerationDate, style: .date)
